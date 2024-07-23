@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Toolbar, Typography } from "@mui/material";
+import { Toolbar } from "@mui/material";
+import { Route, Routes } from "react-router-dom";
 
 import { StoreContext, initialStore } from "./store";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
+import Home from "./pages/home";
 
 const mainContainerStyles = {
   minHeight: 'calc(100vh - 64px)'
@@ -18,7 +20,9 @@ const App = () => {
         <AppHeader />
         <Toolbar />
         <main style={mainContainerStyles}>
-          hi
+          <Routes>
+            <Route index element={<Home />} />
+          </Routes>
         </main>
         <AppFooter />
       </div>
