@@ -1,24 +1,26 @@
 import React, { useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Toolbar, Typography } from "@mui/material";
 
 import { StoreContext, initialStore } from "./store";
+import AppHeader from "./components/AppHeader";
+import AppFooter from "./components/AppFooter";
+
+const mainContainerStyles = {
+  minHeight: 'calc(100vh - 64px)'
+};
 
 const App = () => {
   const [store, setStore] = useState(initialStore);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <div>Hello world!</div>,
-    },
-  ]);
-
   return (
     <StoreContext.Provider value={{ store, setStore }}>
       <div className="app">
-        <main>
-          <RouterProvider router={router} />
+        <AppHeader />
+        <Toolbar />
+        <main style={mainContainerStyles}>
+          hi
         </main>
+        <AppFooter />
       </div>
     </StoreContext.Provider>
   );
