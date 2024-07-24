@@ -1,4 +1,6 @@
 export const getConvertedJpgFile = (file) => {
+  if (file.type === "image/jpeg") return file;
+
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
