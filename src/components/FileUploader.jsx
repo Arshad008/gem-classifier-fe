@@ -1,11 +1,20 @@
-import React, { useEffect } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useDropzone } from 'react-dropzone';
 
+import { getConvertedJpgFile } from "../helpers";
+
 const FileUploader = () => {
+  const [isPending, setPending] = useState(false);
+
   const { acceptedFiles, getRootProps, getInputProps, fileRejections } = useDropzone({
-    maxFiles: 1
+    maxFiles: 1,
+    accept: {
+      'image/*': []
+    },
+    disabled: isPending
   });
+  console.log('acceptedFiles', acceptedFiles);
 
   const errorMessages = [];
 
@@ -19,25 +28,61 @@ const FileUploader = () => {
     }
   });
 
+  useEffect(() => {
+    if (acceptedFiles.length) {
+      const uploadedFile = acceptedFiles[0];
+
+      if (uploadedFile) {
+        initiateImageUpload(uploadedFile);
+      }
+    }
+  }, [acceptedFiles]);
+
+  const initiateImageUpload = async (file) => {
+    setPending(true);
+    console.log('file', file);
+    const jpgFile = await getConvertedJpgFile(file);
+    console.log('jpgFile', jpgFile);
+  };
+
   return (
-    <div {...getRootProps({ className: 'img-uploader' })}>
+    <Box component="div" sx={isPending ? undefined : {
+      '&:hover': {
+        borderColor: '#1677ff',
+        cursor: 'pointer',
+      },
+    }} {...getRootProps({ className: 'img-uploader' })}>
       <input {...getInputProps()} />
-      <Stack>
-        <Typography variant="subtitle2" fontWeight={600}>
-          Drag 'n' drop some files here, or click to select files
+      <Stack textAlign="center" alignItems="center">
+        <Typography variant="subtitle2" fontWeight={600} display="flex" alignItems="center">
+          {isPending ? (
+            <>
+              <CircularProgress size={20} />&nbsp;
+              Uploading, Please wait
+            </>
+          ) : `Drag 'n' drop some files here, or click to select files`}
         </Typography>
-        {errorMessages.length ? <Typography>
-          Upload Failed: 
-        </Typography> : null}
         {errorMessages.length ? (
-          <Box component="ul" style={{ margin: 0, padding: 0 }}>
-            {errorMessages.map((errorMessage, index) => (
-              <Typography component="li" variant="caption" color="error" key={`li-${index}`}>{errorMessage}</Typography>
-            ))}
-          </Box>
+          <Typography variant="subtitle2" fontWeight={600}>
+            Upload Failed:
+            &nbsp;
+            {errorMessages.length ? errorMessages.map((errorMessage, index) => {
+              const isLastItem = errorMessages.length - 1 === index;
+
+              return (
+                <Typography
+                  key={`li-${index}`}
+                  variant="caption"
+                  color="error"
+                >
+                  {errorMessage}{isLastItem ? null : ', '}
+                </Typography>
+              )
+            }) : null}
+          </Typography>
         ) : null}
       </Stack>
-    </div>
+    </Box >
   );
 };
 
