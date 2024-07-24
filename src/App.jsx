@@ -8,7 +8,7 @@ import AppFooter from "./components/AppFooter";
 import Home from "./pages/home";
 
 const mainContainerStyles = {
-  minHeight: 'calc(100vh - 64px)'
+  minHeight: 'calc(100vh - (64px + 56px))'
 };
 
 const App = () => {
