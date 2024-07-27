@@ -109,7 +109,7 @@ const FileUploader = () => {
             alignItems="center"
           >
             <CircularProgress size={20} />
-            &nbsp; Uploading, Please wait
+            &nbsp; Processing, Please wait
           </Typography>
         </>
       );
