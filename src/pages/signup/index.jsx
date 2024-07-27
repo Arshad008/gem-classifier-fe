@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -11,7 +11,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
 
+import { signUpUser } from "../../apis";
 import { isEmailValid } from "../../helpers";
 
 const containerStyles = {
@@ -35,9 +37,13 @@ const initialState = {
 };
 
 function SignUpPage() {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   // State
   const [state, setState] = useState({ ...initialState });
   const [errors, setErrors] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   const updateState = (attributes) => {
     setState((prevState) => ({
@@ -46,7 +52,7 @@ function SignUpPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newErrors = [];
@@ -76,13 +82,42 @@ function SignUpPage() {
     }
 
     if (!newErrors.length) {
+      setLoading(true);
+
       const apiData = {
         firstName: state.firstName.trim(),
         lastName: state.lastName.trim(),
         email: state.email.trim().toLowerCase(),
         password: state.password.trim(),
       };
-      console.log("proceed", apiData);
+
+      await signUpUser(apiData)
+        .then((res) => {
+          if (res.success) {
+            enqueueSnackbar("User registration successfull, Please Login", {
+              variant: "success",
+            });
+
+            navigate("/sign-in");
+          } else {
+            enqueueSnackbar(
+              res.msg || "User registration failed, Please try again!",
+              {
+                variant: "error",
+              }
+            );
+          }
+        })
+        .catch((err) => {
+          enqueueSnackbar(
+            err.message || "User registration failed, Please try again!",
+            {
+              variant: "error",
+            }
+          );
+        });
+
+      setLoading(false);
     }
 
     setErrors(newErrors);
@@ -173,6 +208,7 @@ function SignUpPage() {
                 size="large"
                 variant="contained"
                 color="primary"
+                loading={isLoading}
                 sx={{ maxWidth: "400px", textTransform: "capitalize" }}
               >
                 Sign Up
