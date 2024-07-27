@@ -1,18 +1,17 @@
 import React, { useState } from "react";
+import { LoadingButton } from "@mui/lab";
+import { NavLink } from "react-router-dom";
 import {
   Card,
   CardContent,
-  Checkbox,
   Collapse,
   FormControl,
-  FormControlLabel,
   Grid,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { NavLink } from "react-router-dom";
+
 import { isEmailValid } from "../../helpers";
 
 const containerStyles = {
@@ -80,7 +79,7 @@ function SignUpPage() {
       const apiData = {
         firstName: state.firstName.trim(),
         lastName: state.lastName.trim(),
-        email: state.email.trim(),
+        email: state.email.trim().toLowerCase(),
         password: state.password.trim(),
       };
       console.log("proceed", apiData);
@@ -94,9 +93,7 @@ function SignUpPage() {
       <Card style={cardContainerStyles}>
         <CardContent>
           <div style={{ marginBottom: "15px" }}>
-            <Typography variant="h6" fontWeight={600}>
-              Sign Up
-            </Typography>
+            <Typography variant="h4">Sign Up</Typography>
           </div>
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -131,6 +128,7 @@ function SignUpPage() {
                   <TextField
                     label="First Name *"
                     placeholder="John"
+                    value={state.firstName}
                     onChange={(e) => updateState({ firstName: e.target.value })}
                   />
                 </FormControl>
@@ -140,6 +138,7 @@ function SignUpPage() {
                   <TextField
                     label="Last Name *"
                     placeholder="Doe"
+                    value={state.lastName}
                     onChange={(e) => updateState({ lastName: e.target.value })}
                   />
                 </FormControl>
@@ -150,6 +149,7 @@ function SignUpPage() {
                     type="email"
                     label="Email *"
                     placeholder="johndoe@gmail.com"
+                    value={state.email}
                     onChange={(e) => updateState({ email: e.target.value })}
                   />
                 </FormControl>
@@ -160,6 +160,7 @@ function SignUpPage() {
                     type="password"
                     label="Password *"
                     placeholder="********"
+                    value={state.password}
                     onChange={(e) => updateState({ password: e.target.value })}
                   />
                 </FormControl>
@@ -180,7 +181,7 @@ function SignUpPage() {
                 Already have an account?{" "}
                 <NavLink to="/sign-in" style={{ textDecoration: "none" }}>
                   <Typography component="span" color="primary" fontWeight={600}>
-                    Login
+                    Sign In
                   </Typography>
                 </NavLink>
               </Typography>

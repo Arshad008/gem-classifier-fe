@@ -7,6 +7,7 @@ import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
 import HomePage from "./pages/home";
 import SignUpPage from "./pages/signup";
+import SignInPage from "./pages/signin";
 
 const mainContainerStyles = {
   minHeight: {
@@ -27,6 +28,7 @@ const App = () => {
           <Routes>
             <Route index path="/" element={<HomePage />} />
             <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
           </Routes>
         </Box>
         <AppFooter />
