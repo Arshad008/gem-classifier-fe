@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { Toolbar } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 
 import { StoreContext, initialStore } from "./store";
 import AppHeader from "./components/AppHeader";
 import AppFooter from "./components/AppFooter";
-import Home from "./pages/home";
+import HomePage from "./pages/home";
+import SignUpPage from "./pages/signup";
+import SignInPage from "./pages/signin";
 
 const mainContainerStyles = {
-  minHeight: 'calc(100vh - 64px)'
+  minHeight: {
+    xs: "calc(100vh - (56px + 56px))",
+    sm: "calc(100vh - (64px + 56px))",
+  },
 };
 
 const App = () => {
@@ -19,11 +24,13 @@ const App = () => {
       <div className="app">
         <AppHeader />
         <Toolbar />
-        <main style={mainContainerStyles}>
+        <Box component="main" sx={mainContainerStyles}>
           <Routes>
-            <Route index element={<Home />} />
+            <Route index path="/" element={<HomePage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
           </Routes>
-        </main>
+        </Box>
         <AppFooter />
       </div>
     </StoreContext.Provider>
