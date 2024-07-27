@@ -7,22 +7,23 @@ import {
   Divider,
   Grid,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 
 import FileUploader from "../../components/FileUploader";
-
 
 const Home = () => {
   return (
     <div>
       <Container maxWidth="lg">
         <Stack>
-          <div style={{ padding: '16px 0' }}>
+          <div style={{ padding: "16px 0" }}>
             <FileUploader />
           </div>
           <div>
-            <Divider><Typography variant="h6">Recent</Typography></Divider>
+            <Divider>
+              <Typography variant="h6">Recent</Typography>
+            </Divider>
           </div>
           <div>
             <Grid container spacing={2}>
@@ -46,7 +47,7 @@ const Home = () => {
         </Stack>
       </Container>
     </div>
-  )
+  );
 };
 
 export default Home;
