@@ -4,13 +4,15 @@ body {
 
 .img-uploader {
   border: 2px dashed #d9d9d9;
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: transparent;
   border-radius: 7px;
-  padding: 16px;
+  padding: 32px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: all ease 0.3s;
   color: rgba(0, 0, 0, 0.45);
+  max-width: 600px;
+  margin: 0 auto;
 }

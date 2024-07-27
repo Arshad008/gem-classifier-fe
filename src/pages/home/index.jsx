@@ -17,11 +17,11 @@ const Home = () => {
     <div>
       <Container maxWidth="lg">
         <Stack>
-          <div style={{ padding: "16px 0" }}>
+          <div style={{ padding: "60px 0 30px 0" }}>
             <FileUploader />
           </div>
-          <div>
-            <Divider>
+          <div style={{ marginBottom: "15px" }}>
+            <Divider textAlign="left">
               <Typography variant="h6">Recent</Typography>
             </Divider>
           </div>
