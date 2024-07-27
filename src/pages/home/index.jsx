@@ -12,7 +12,7 @@ import {
 
 import FileUploader from "../../components/FileUploader";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div>
       <Container maxWidth="lg">
@@ -50,4 +50,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
