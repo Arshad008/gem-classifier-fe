@@ -3,7 +3,7 @@ body {
 }
 
 .img-uploader {
-  border: 3px dashed #d9d9d9;
+  border: 2px dashed #d9d9d9;
   background-color: rgba(0, 0, 0, 0.02);
   border-radius: 7px;
   padding: 16px;
