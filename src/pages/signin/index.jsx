@@ -20,8 +20,9 @@ const containerStyles = {
 };
 
 const cardContainerStyles = {
-  maxWidth: "600px",
+  maxWidth: "400px",
   borderRadius: "20px",
+  margin: '15px 0',
 };
 
 const initialState = {
@@ -86,7 +87,7 @@ function SignInPage() {
                 variant="contained"
                 color="primary"
                 disabled={isSubmitDisabled}
-                sx={{ maxWidth: "400px", textTransform: "capitalize" }}
+                sx={{ maxWidth: "300px", textTransform: "capitalize" }}
               >
                 Sign In
               </LoadingButton>

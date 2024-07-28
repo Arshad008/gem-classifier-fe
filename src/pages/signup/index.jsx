@@ -14,7 +14,7 @@ import {
 import { useSnackbar } from "notistack";
 
 import { signUpUser } from "../../apis";
-import { isEmailValid } from "../../helpers";
+import { getSha512ConvertedHash, isEmailValid } from "../../helpers";
 
 const containerStyles = {
   display: "flex",
@@ -25,8 +25,9 @@ const containerStyles = {
 };
 
 const cardContainerStyles = {
-  maxWidth: "600px",
+  maxWidth: "400px",
   borderRadius: "20px",
+  margin: "15px 0",
 };
 
 const initialState = {
@@ -88,7 +89,7 @@ function SignUpPage() {
         firstName: state.firstName.trim(),
         lastName: state.lastName.trim(),
         email: state.email.trim().toLowerCase(),
-        password: state.password.trim(),
+        password: getSha512ConvertedHash(state.password),
       };
 
       await signUpUser(apiData)
@@ -209,7 +210,7 @@ function SignUpPage() {
                 variant="contained"
                 color="primary"
                 loading={isLoading}
-                sx={{ maxWidth: "400px", textTransform: "capitalize" }}
+                sx={{ maxWidth: "300px", textTransform: "capitalize" }}
               >
                 Sign Up
               </LoadingButton>

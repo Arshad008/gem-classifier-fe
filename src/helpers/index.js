@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 export const getConvertedJpgFile = (file) => {
   if (file.type === "image/jpeg") return file;
 
@@ -36,4 +38,8 @@ export const isEmailValid = (email = "") => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+};
+
+export const getSha512ConvertedHash = (text) => {
+  return CryptoJS.SHA512(text).toString()
 };
