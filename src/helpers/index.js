@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
 export const getConvertedJpgFile = (file) => {
   if (file.type === "image/jpeg") return file;
@@ -8,20 +8,22 @@ export const getConvertedJpgFile = (file) => {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
         canvas.toBlob(
           (blob) => {
             if (blob) {
-              resolve(new File([blob], 'converted.jpg', { type: 'image/jpeg' }));
+              resolve(
+                new File([blob], "converted.jpg", { type: "image/jpeg" })
+              );
             } else {
-              reject(new Error('Conversion to JPG failed.'));
+              reject(new Error("Conversion to JPG failed."));
             }
           },
-          'image/jpeg',
+          "image/jpeg",
           1
         );
       };
@@ -41,5 +43,9 @@ export const isEmailValid = (email = "") => {
 };
 
 export const getSha512ConvertedHash = (text) => {
-  return CryptoJS.SHA512(text).toString()
+  return CryptoJS.SHA512(text).toString();
+};
+
+export const setAuthUserIdToLocalStorage = (userId) => {
+  window.localStorage.setItem("AUTH_ID", userId);
 };

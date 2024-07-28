@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -10,6 +10,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
+
+import { signInUser } from "../../apis";
+import {
+  getSha512ConvertedHash,
+  setAuthUserIdToLocalStorage,
+} from "../../helpers";
 
 const containerStyles = {
   display: "flex",
@@ -22,7 +29,7 @@ const containerStyles = {
 const cardContainerStyles = {
   maxWidth: "400px",
   borderRadius: "20px",
-  margin: '15px 0',
+  margin: "15px 0",
 };
 
 const initialState = {
@@ -31,8 +38,12 @@ const initialState = {
 };
 
 function SignInPage() {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   // State
   const [state, setState] = useState({ ...initialState });
+  const [isLoading, setLoading] = useState(false);
 
   const isSubmitDisabled =
     !state.email.trim().length || !state.password.trim().length;
@@ -44,9 +55,32 @@ function SignInPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(state);
+
+    setLoading(true);
+
+    await signInUser({
+      email: state.email,
+      password: getSha512ConvertedHash(state.password),
+    })
+      .then((res) => {
+        if (res.data && res.success) {
+          setAuthUserIdToLocalStorage(res.data);
+          navigate("/");
+        } else {
+          enqueueSnackbar("Invalid username or password!", {
+            variant: "error",
+          });
+        }
+      })
+      .catch(() => {
+        enqueueSnackbar("Invalid username or password!", {
+          variant: "error",
+        });
+      });
+
+    setLoading(false);
   };
 
   return (
@@ -86,6 +120,7 @@ function SignInPage() {
                 size="large"
                 variant="contained"
                 color="primary"
+                loading={isLoading}
                 disabled={isSubmitDisabled}
                 sx={{ maxWidth: "300px", textTransform: "capitalize" }}
               >
