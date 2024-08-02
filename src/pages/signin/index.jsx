@@ -81,6 +81,7 @@ function SignInPage() {
           });
 
           navigate("/");
+          window.location.reload();
         } else {
           enqueueSnackbar("Invalid username or password!", {
             variant: "error",

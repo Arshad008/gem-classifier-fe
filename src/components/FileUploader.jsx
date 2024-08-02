@@ -7,7 +7,7 @@ import { StoreContext } from "../store";
 import { uploadFile } from "../apis";
 import { getConvertedJpgFile } from "../helpers";
 
-const FileUploader = () => {
+const FileUploader = ({ updateHistoryList }) => {
   const { enqueueSnackbar } = useSnackbar();
   const { store, setStore } = useContext(StoreContext);
 
@@ -15,7 +15,6 @@ const FileUploader = () => {
   const [isPending, setPending] = useState(false);
   const [thumbFile, setThumbFile] = useState(undefined);
   const [errorMessages, setErrorMessages] = useState([]);
-  const [historyList, setHistoryList] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -61,6 +60,8 @@ const FileUploader = () => {
             enqueueSnackbar("Prediction completed successfully!", {
               variant: "success",
             });
+
+            updateHistoryList();
           } else {
             enqueueSnackbar("Prediction failed!", {
               variant: "error",
