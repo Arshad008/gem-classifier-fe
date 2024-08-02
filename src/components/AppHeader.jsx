@@ -82,7 +82,9 @@ const AppHeader = () => {
               aria-expanded={isMenuOpen ? "true" : undefined}
               onClick={openMenu}
             >
-              <Avatar>{store.authUser.firstName.substring(0, 1)}</Avatar>
+              <Avatar sx={{ width: 35, height: 35 }}>
+                {store.authUser.firstName.substring(0, 1)}
+              </Avatar>
             </IconButton>
           </Tooltip>
         ) : (
