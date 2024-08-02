@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
+import { useSnackbar } from "notistack";
 
-import { getConvertedJpgFile } from "../helpers";
 import { StoreContext } from "../store";
+import { uploadFile } from "../apis";
+import { getConvertedJpgFile } from "../helpers";
 
 const FileUploader = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { store, setStore } = useContext(StoreContext);
+
   // State
   const [isPending, setPending] = useState(false);
   const [thumbFile, setThumbFile] = useState(undefined);
   const [errorMessages, setErrorMessages] = useState([]);
-
-  // Hooks
-  const { store, setStore } = useContext(StoreContext);
+  const [historyList, setHistoryList] = useState([]);
 
   useEffect(() => {
     return () => {
@@ -40,12 +43,42 @@ const FileUploader = () => {
         isLoading: true,
       });
 
-      const fileToBeUploaded = await getConvertedJpgFile(acceptedFiles[0]);
+      const convertedFile = await getConvertedJpgFile(acceptedFiles[0]);
+
       setThumbFile(
-        Object.assign(fileToBeUploaded, {
-          preview: URL.createObjectURL(fileToBeUploaded),
+        Object.assign(convertedFile, {
+          preview: URL.createObjectURL(convertedFile),
         })
       );
+
+      const form = new FormData();
+      form.append("file", convertedFile);
+
+      // API CALL
+      await uploadFile(form)
+        .then((res) => {
+          if (res.success && res.data) {
+            enqueueSnackbar("Prediction completed successfully!", {
+              variant: "success",
+            });
+          } else {
+            enqueueSnackbar("Prediction failed!", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          enqueueSnackbar("Prediction failed!", {
+            variant: "error",
+          });
+        });
+
+      // Turn on loaders
+      updateStore({
+        isLoading: false,
+      });
+
+      setPending(false);
     }
   };
 
