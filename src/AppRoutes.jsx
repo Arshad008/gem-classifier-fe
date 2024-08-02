@@ -12,9 +12,7 @@ const AppRoutes = () => {
   console.log("store", store);
 
   useEffect(() => {
-    if (store.authUserId && !store.authUser) {
-      getAuthUserData();
-    }
+    getAuthUserData();
   }, [store.authUserId]);
 
   const updateStore = (attributes = {}) => {
@@ -25,18 +23,21 @@ const AppRoutes = () => {
   };
 
   const getAuthUserData = async () => {
-    await getAuthUser()
-      .then((res) => {
-        console.log("res", res);
-        if (res.success && res.data) {
-          console.log("res.data", res.data);
-          updateStore({
-            authUser: res.data,
-          });
-        }
-      })
-      .catch((err) => console.error("auth error", err));
-    console.log("store 2", store);
+    if (store.authUserId && !store.authUser) {
+      updateStore({ isLoading: true });
+
+      await getAuthUser(store.authUserId)
+        .then((res) => {
+          if (res.success && res.data) {
+            updateStore({
+              authUser: res.data,
+            });
+          }
+        })
+        .catch((err) => console.error("auth error", err));
+
+      updateStore({ isLoading: false });
+    }
   };
 
   return (

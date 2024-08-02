@@ -6,12 +6,16 @@ const apiPaths = {
   user: "user",
 };
 
+const defaultHeaders = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+};
+
 const api = Axios.create({
   baseURL: `${process.env.REACT_APP_REST_API_BASE_URL}`,
   headers: {
     auth: getAuthUserIdFromLocalStorage(),
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    ...defaultHeaders,
   },
 });
 
@@ -32,9 +36,12 @@ export const signInUser = async (data) => {
     .catch((err) => err);
 };
 
-export const getAuthUser = () => {
+export const getAuthUser = (userId) => {
   return api
-    .get(`${process.env.REACT_APP_REST_API_BASE_URL}/${apiPaths.user}`)
+    .get(`${process.env.REACT_APP_REST_API_BASE_URL}/${apiPaths.user}`, {
+      ...defaultHeaders,
+      auth: userId,
+    })
     .then((res) => res.data)
     .catch((err) => err);
 };
