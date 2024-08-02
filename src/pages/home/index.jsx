@@ -14,12 +14,18 @@ import {
 import { getPredictionHistory } from "../../apis";
 import { StoreContext } from "../../store";
 import FileUploader from "../../components/FileUploader";
+import ViewPredictionDetailsModal from "./ViewPredictionDetailsModal";
 
 const HomePage = () => {
   const { store, setStore } = useContext(StoreContext);
 
   // State
   const [historyList, setHistoryList] = useState([]);
+  const [viewPredictionResultModalData, setViewPredictionResultModalData] =
+    useState({
+      open: false,
+      historyItem: undefined,
+    });
 
   useEffect(() => {
     getHistory();
@@ -59,6 +65,19 @@ const HomePage = () => {
     return 0;
   };
 
+  const openiewPredictionResultModalData = (historyItem) => {
+    setViewPredictionResultModalData({
+      open: true,
+      historyItem,
+    });
+  };
+
+  const closePredictionResultModalData = () => {
+    setViewPredictionResultModalData({
+      open: false,
+    });
+  };
+
   return (
     <div>
       <Container maxWidth="lg">
@@ -68,7 +87,7 @@ const HomePage = () => {
           </div>
           <div style={{ marginBottom: "15px" }}>
             <Divider textAlign="left">
-              <Typography variant="h6">Recent</Typography>
+              <Typography variant="h6">Recent Predictions</Typography>
             </Divider>
           </div>
           <div>
@@ -138,13 +157,16 @@ const HomePage = () => {
                               }}
                             >
                               Date:{" "}
-                              {new Date(historyItem.createdAt).toString()}
+                              {new Date(historyItem.createdAt).toDateString()}
                             </Typography>
                           </Stack>
                           <Stack>
                             <Button
                               size="small"
                               color="primary"
+                              onClick={() =>
+                                openiewPredictionResultModalData(historyItem)
+                              }
                               sx={{
                                 textTransform: "capitalize",
                                 fontWeight: 600,
@@ -171,6 +193,15 @@ const HomePage = () => {
           </div>
         </Stack>
       </Container>
+      {/* MODALS */}
+      {viewPredictionResultModalData.open &&
+      viewPredictionResultModalData.historyItem ? (
+        <ViewPredictionDetailsModal
+          open={viewPredictionResultModalData.open}
+          onClose={closePredictionResultModalData}
+          predictionData={viewPredictionResultModalData.historyItem}
+        />
+      ) : null}
     </div>
   );
 };
