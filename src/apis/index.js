@@ -58,3 +58,10 @@ export const uploadFile = (data) => {
     .then((res) => res.data)
     .catch((err) => err);
 };
+
+export const getPredictionHistory = () => {
+  return api
+    .get(`/${apiPaths.history}`)
+    .then((res) => res.data)
+    .catch((err) => err);
+};

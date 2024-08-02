@@ -9,7 +9,6 @@ import SignInPage from "./pages/signin";
 
 const AppRoutes = () => {
   const { store, setStore } = useContext(StoreContext);
-  console.log("store", store);
 
   useEffect(() => {
     getAuthUserData();
