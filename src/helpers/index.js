@@ -57,3 +57,7 @@ export const setAuthUserIdToLocalStorage = (userId) => {
 export const getAuthUserIdFromLocalStorage = () => {
   return window.localStorage.getItem("AUTH_USER_ID");
 };
+
+export const removeAuthUserIdFromLocalStorage = () => {
+  window.localStorage.removeItem("AUTH_USER_ID");
+};

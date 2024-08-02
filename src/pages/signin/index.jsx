@@ -79,6 +79,7 @@ function SignInPage() {
           updateStore({
             authUserId: res.data,
           });
+
           navigate("/");
         } else {
           enqueueSnackbar("Invalid username or password!", {

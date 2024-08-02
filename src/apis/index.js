@@ -37,11 +37,15 @@ export const signInUser = async (data) => {
 };
 
 export const getAuthUser = (userId) => {
-  return api
-    .get(`${process.env.REACT_APP_REST_API_BASE_URL}/${apiPaths.user}`, {
-      ...defaultHeaders,
-      auth: userId,
-    })
+  return Axios.get(
+    `${process.env.REACT_APP_REST_API_BASE_URL}/${apiPaths.user}`,
+    {
+      headers: {
+        ...defaultHeaders,
+        auth: userId,
+      },
+    }
+  )
     .then((res) => res.data)
     .catch((err) => err);
 };
