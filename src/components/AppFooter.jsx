@@ -11,7 +11,7 @@ const containerStyles = {
 const AppFooter = () => {
   return (
     <footer style={containerStyles}>
-      <Typography>&copy; Copyright Gem Classifier</Typography>
+      <Typography>&copy; 2024, Copyright Gem Classifier</Typography>
     </footer>
   );
 };

@@ -26,10 +26,14 @@ const HomePage = () => {
       open: false,
       historyItem: undefined,
     });
+  
+  const isLoggedIn = Boolean(store.authUser);
 
   useEffect(() => {
-    getHistory();
-  }, []);
+    if (isLoggedIn) {
+      getHistory();
+    }
+  }, [store.authUser]);
 
   const updateStore = (attributes = {}) => {
     setStore((prevState) => ({
@@ -145,7 +149,7 @@ const HomePage = () => {
                                 textTransform: "capitalize",
                               }}
                             >
-                              Precition Accuracy: {accuracy}
+                              Prediction Accuracy: {accuracy}
                             </Typography>
                             <Typography
                               className="ellipsis-text-one-line"

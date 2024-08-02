@@ -16,6 +16,9 @@ const FileUploader = ({ updateHistoryList }) => {
   const [thumbFile, setThumbFile] = useState(undefined);
   const [errorMessages, setErrorMessages] = useState([]);
 
+  const isLoggedIn = Boolean(store.authUser);
+  const isUploadDisabled = isPending || !isLoggedIn;
+
   useEffect(() => {
     return () => {
       if (thumbFile) {
@@ -168,7 +171,12 @@ const FileUploader = ({ updateHistoryList }) => {
         >
           Choose a file or drag & drop here.
         </Typography>
-        <Typography variant="caption">JPEG, PNG , Max 5 MB </Typography>
+        <Typography variant="caption">JPEG, PNG , Max 5 MB</Typography>
+        {!isLoggedIn ? (
+          <Typography variant="caption" color="primary">
+            Please Login!
+          </Typography>
+        ) : null}
       </>
     );
   };
@@ -178,7 +186,7 @@ const FileUploader = ({ updateHistoryList }) => {
     accept: {
       "image/*": [],
     },
-    disabled: isPending,
+    disabled: isUploadDisabled,
     onDrop,
     onError,
     onDropRejected,
@@ -189,7 +197,7 @@ const FileUploader = ({ updateHistoryList }) => {
       {...getRootProps({ className: "img-uploader" })}
       component="div"
       sx={
-        isPending
+        isUploadDisabled
           ? undefined
           : {
               "&:hover": {

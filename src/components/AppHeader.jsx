@@ -21,6 +21,8 @@ const containerStyles = {
   backgroundColor: "#24303c",
 };
 
+const menuItemStyles = { fontWeight: 600, fontSize: "14px" };
+
 const buttonStyles = {
   backgroundColor: "#ffffff",
   color: "#000000",
@@ -133,7 +135,12 @@ const AppHeader = () => {
           "aria-labelledby": "profile-avatar-button",
         }}
       >
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem
+          onClick={handleLogout}
+          sx={{ ...menuItemStyles, color: "error.main" }}
+        >
+          Logout
+        </MenuItem>
       </Menu>
     </AppBar>
   );
