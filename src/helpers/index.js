@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 
+// Convert Image To JPG
 export const getConvertedJpgFile = (file) => {
   if (file.type === "image/jpeg") return file;
 
@@ -34,6 +35,7 @@ export const getConvertedJpgFile = (file) => {
   });
 };
 
+// Email Validation
 export const isEmailValid = (email = "") => {
   return String(email)
     .toLowerCase()
@@ -42,10 +44,16 @@ export const isEmailValid = (email = "") => {
     );
 };
 
+// Hash Password
 export const getSha512ConvertedHash = (text) => {
   return CryptoJS.SHA512(text).toString();
 };
 
+// Local Storage Helpers
 export const setAuthUserIdToLocalStorage = (userId) => {
-  window.localStorage.setItem("AUTH_ID", userId);
+  window.localStorage.setItem("AUTH_USER_ID", userId);
+};
+
+export const getAuthUserIdFromLocalStorage = () => {
+  return window.localStorage.getItem("AUTH_USER_ID");
 };

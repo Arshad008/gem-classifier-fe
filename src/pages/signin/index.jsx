@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -13,6 +13,7 @@ import {
 import { useSnackbar } from "notistack";
 
 import { signInUser } from "../../apis";
+import { StoreContext } from "../../store";
 import {
   getSha512ConvertedHash,
   setAuthUserIdToLocalStorage,
@@ -40,6 +41,7 @@ const initialState = {
 function SignInPage() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { store, setStore } = useContext(StoreContext);
 
   // State
   const [state, setState] = useState({ ...initialState });
@@ -50,6 +52,13 @@ function SignInPage() {
 
   const updateState = (attributes) => {
     setState((prevState) => ({
+      ...prevState,
+      ...attributes,
+    }));
+  };
+
+  const updateStore = (attributes = {}) => {
+    setStore((prevState) => ({
       ...prevState,
       ...attributes,
     }));
@@ -67,6 +76,9 @@ function SignInPage() {
       .then((res) => {
         if (res.data && res.success) {
           setAuthUserIdToLocalStorage(res.data);
+          updateStore({
+            authUserId: res.data,
+          });
           navigate("/");
         } else {
           enqueueSnackbar("Invalid username or password!", {
