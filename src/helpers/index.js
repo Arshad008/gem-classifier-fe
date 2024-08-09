@@ -1,5 +1,10 @@
 import CryptoJS from "crypto-js";
 
+// Get Upload Image Path
+export const getImageLink = (imageName) => {
+  return `${process.env.REACT_APP_REST_API_BASE_URL}/${process.env.REACT_APP_REST_API_UPLOADS_PATH}/${imageName}`;
+};
+
 // Convert Image To JPG
 export const getConvertedJpgFile = (file) => {
   if (file.type === "image/jpeg") return file;

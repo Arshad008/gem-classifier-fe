@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { getImageLink } from "../../helpers";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -93,7 +94,7 @@ const ViewPredictionDetailsModal = ({ open, onClose, predictionData }) => {
         <Stack role="presentation">
           <div style={{ textAlign: "center" }}>
             <img
-              src="https://fastly.picsum.photos/id/522/200/300.jpg?hmac=6-KFAVAX70eulRbHj_faT1bRFPGrXhPiDHXe6zPaH-4"
+              src={getImageLink(predictionData.imageUrl)}
               alt={predictionData.classifiedClass}
               style={{ width: "150px", height: "150px", borderRadius: "7px" }}
             />

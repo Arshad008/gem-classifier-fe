@@ -15,6 +15,7 @@ import { getPredictionHistory } from "../../apis";
 import { StoreContext } from "../../store";
 import FileUploader from "../../components/FileUploader";
 import ViewPredictionDetailsModal from "./ViewPredictionDetailsModal";
+import { getImageLink } from "../../helpers";
 
 const HomePage = () => {
   const { store, setStore } = useContext(StoreContext);
@@ -126,7 +127,7 @@ const HomePage = () => {
                           <Stack>
                             <Avatar
                               variant="rounded"
-                              src="https://fastly.picsum.photos/id/522/200/300.jpg?hmac=6-KFAVAX70eulRbHj_faT1bRFPGrXhPiDHXe6zPaH-4"
+                              src={getImageLink(historyItem.imageUrl)}
                               sx={{ width: "60px", height: "60px" }}
                             />
                           </Stack>
