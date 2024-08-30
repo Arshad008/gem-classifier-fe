@@ -6,6 +6,7 @@ import { StoreContext } from "./store";
 import HomePage from "./pages/home";
 import SignUpPage from "./pages/signup";
 import SignInPage from "./pages/signin";
+import PredictPage from "./pages/predict";
 
 const AppRoutes = () => {
   const { store, setStore } = useContext(StoreContext);
@@ -42,6 +43,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route index path="/" element={<HomePage />} />
+      <Route index path="/predict" element={<PredictPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
     </Routes>

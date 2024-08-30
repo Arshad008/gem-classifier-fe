@@ -30,8 +30,12 @@ const App = () => {
     <SnackbarProvider {...defaultSnackBarOptions}>
       <StoreContext.Provider value={{ store, setStore }}>
         <div className="app">
-          <AppHeader />
-          <Toolbar />
+          {window.location.pathname !== "/" ? (
+            <>
+              <AppHeader />
+              <Toolbar />
+            </>
+          ) : null}
           <Box component="main" sx={mainContainerStyles}>
             <AppRoutes />
           </Box>
