@@ -22,7 +22,7 @@ const heroContainerStyles = {
   alignItems: "center",
   flexDirection: "column",
   background:
-    "url('/images/light-spot-left.png') no-repeat center left/contain, url('/images/light-spot-right.png') no-repeat center right/contain, #0d1116",
+    "url('/images/light-spot-left.png') no-repeat center left/contain, url('/images/light-spot-right.png') no-repeat center right/contain, url('/images/grid-bg.png'), #0d1116",
   color: "#ffffff",
   textAlign: "center",
   padding: "40px 16px",
@@ -122,45 +122,89 @@ const HomePage = () => {
           <img
             src="/images/hero-image.png"
             alt="app-logo"
-            style={{ maxWidth: "250px", margin: '20px 0' }}
+            style={{ maxWidth: "250px", margin: "20px 0" }}
           />
           <ButtonBase sx={heroActionButtonStyles}>Get Started</ButtonBase>
         </Stack>
       </div>
+      <div
+        style={{
+          backgroundColor: "rgba(0, 0, 0, .03)",
+          marginBottom: "60px",
+        }}
+      >
+        <div style={{ marginBottom: "15px", padding: "30px 15px" }}>
+          <div style={{ marginBottom: "15px" }}>
+            <Typography variant="h5" textAlign="center">
+              About
+            </Typography>
+          </div>
+          <Typography textAlign="justify" maxWidth="800px" m="0 auto">
+            Our gemstone classifying web app leverages cutting-edge AI
+            technology to provide quick and accurate gemstone identification for
+            enthusiasts and professionals alike. Our mission is to make gemstone
+            knowledge accessible to everyone, offering a user-friendly platform
+            that combines technology and passion for gems. Whether you're a
+            gemologist or a curious collector, our app is designed to enhance
+            your understanding and appreciation of these beautiful stones.
+          </Typography>
+        </div>
+      </div>
+      <Container maxWidth="lg" sx={{ pb: "60px" }}>
+        {/* How It Works Section */}
+        <Stack alignItems="center">
+          <div style={{ marginBottom: "15px" }}>
+            <Typography variant="h5" textAlign="center">
+              How it works?
+            </Typography>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <img
+              src="/images/how-it-works.png"
+              alt="how-it-works"
+              style={{ width: "100%", maxWidth: "600px" }}
+            />
+          </div>
+        </Stack>
+      </Container>
       <Container maxWidth="lg">
         {/* FAQ Section */}
-        <Stack>
+        <Stack alignItems="center">
           <div style={{ marginBottom: "15px" }}>
-            <Typography variant="h6">Frequently Asked Questions</Typography>
+            <Typography variant="h5" textAlign="center">
+              Frequently Asked Questions
+            </Typography>
           </div>
-          {accordionData.map((item, index) => {
-            const key = `accordion-${index}`;
-            const id = `panel-header-${index}`;
-            const ariaControls = `panel-content-${index}`;
+          <div style={{ maxWidth: "600px" }}>
+            {accordionData.map((item, index) => {
+              const key = `accordion-${index}`;
+              const id = `panel-header-${index}`;
+              const ariaControls = `panel-content-${index}`;
 
-            const styles = {};
+              const styles = {};
 
-            if (index === 0) {
-              styles.borderTopLeftRadius = "7px";
-              styles.borderTopRightRadius = "7px";
-            }
+              if (index === 0) {
+                styles.borderTopLeftRadius = "7px";
+                styles.borderTopRightRadius = "7px";
+              }
 
-            if (index === accordionData.length - 1) {
-              styles.borderBottomLeftRadius = "7px";
-              styles.borderBottomRightRadius = "7px";
-            }
+              if (index === accordionData.length - 1) {
+                styles.borderBottomLeftRadius = "7px";
+                styles.borderBottomRightRadius = "7px";
+              }
 
-            return (
-              <Accordion key={key} sx={styles}>
-                <AccordionSummary id={id} aria-controls={ariaControls}>
-                  <Typography>{item.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>{item.description}</Typography>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
+              return (
+                <Accordion key={key} sx={styles}>
+                  <AccordionSummary id={id} aria-controls={ariaControls}>
+                    <Typography>{item.title}</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>{item.description}</Typography>
+                  </AccordionDetails>
+                </Accordion>
+              );
+            })}
+          </div>
         </Stack>
       </Container>
     </div>
