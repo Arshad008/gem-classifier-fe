@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Accordion as MuiAccordion,
   AccordionActions,
@@ -10,11 +11,14 @@ import {
   Stack,
   styled,
   Typography,
+  Grid,
 } from "@mui/material";
 import {
   ExpandMore as ExpandMoreIcon,
   ArrowForwardIosSharp as ArrowForwardIosSharpIcon,
 } from "@mui/icons-material";
+
+import FeatureCard from "../../components/FeatureCard";
 
 const heroContainerStyles = {
   display: "flex",
@@ -92,12 +96,37 @@ const accordionData = [
   },
 ];
 
+const features = [
+  {
+    iconName: "accuracy",
+    title: "AI-Powered Accuracy",
+  },
+  {
+    iconName: "fast",
+    title: "Fast and Easy Process",
+  },
+  {
+    iconName: "secure",
+    title: "Secure and Private",
+  },
+  {
+    iconName: "mobile-friendly",
+    title: "Mobile Compatibility",
+  },
+  {
+    iconName: "user-friendly",
+    title: "User-Friendly Interface",
+  },
+];
+
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       {/* Hero Section */}
@@ -124,7 +153,12 @@ const HomePage = () => {
             alt="app-logo"
             style={{ maxWidth: "250px", margin: "20px 0" }}
           />
-          <ButtonBase sx={heroActionButtonStyles}>Get Started</ButtonBase>
+          <ButtonBase
+            sx={heroActionButtonStyles}
+            onClick={() => navigate("/predict")}
+          >
+            Get Started
+          </ButtonBase>
         </Stack>
       </div>
       <div
@@ -167,7 +201,27 @@ const HomePage = () => {
           </div>
         </Stack>
       </Container>
-      <Container maxWidth="lg">
+      <Container sx={{ pb: "60px" }}>
+        <div style={{ marginBottom: "15px" }}>
+          <Typography variant="h5" textAlign="center">
+            Features
+          </Typography>
+        </div>
+        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+          <Grid container spacing={2}>
+            {features.map((featureItem, index) => {
+              const keyName = `feature-item-${index + 1}`;
+
+              return (
+                <Grid item xs={12} sm={4} key={keyName}>
+                  <FeatureCard {...featureItem} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </div>
+      </Container>
+      <Container maxWidth="lg" sx={{ pb: "60px" }}>
         {/* FAQ Section */}
         <Stack alignItems="center">
           <div style={{ marginBottom: "15px" }}>

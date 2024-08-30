@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Box, Toolbar } from "@mui/material";
 import { SnackbarProvider } from "notistack";
 
@@ -24,13 +25,16 @@ const mainContainerStyles = {
 };
 
 const App = () => {
+  const location = useLocation();
+
+  // State
   const [store, setStore] = useState(initialStore);
 
   return (
     <SnackbarProvider {...defaultSnackBarOptions}>
       <StoreContext.Provider value={{ store, setStore }}>
         <div className="app">
-          {window.location.pathname !== "/" ? (
+          {location.pathname !== "/" ? (
             <>
               <AppHeader />
               <Toolbar />
