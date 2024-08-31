@@ -80,7 +80,7 @@ function SignInPage() {
             authUserId: res.data,
           });
 
-          navigate("/");
+          navigate("/predict");
           window.location.reload();
         } else {
           enqueueSnackbar("Invalid username or password!", {
