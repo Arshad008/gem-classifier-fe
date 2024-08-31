@@ -69,7 +69,6 @@ const ViewPredictionDetailsModal = ({ open, onClose, predictionData }) => {
           newRows.push(rowItem);
         });
       }
-      console.log("matchingData", matchingData);
     }
 
     setRows(newRows);

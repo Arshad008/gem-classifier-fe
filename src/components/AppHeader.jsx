@@ -72,7 +72,15 @@ const AppHeader = () => {
             height="36px"
           />
         </NavLink>
-        <Typography variant="h6" color="#ffffff" ml="10px" flexGrow={1}>
+        <Typography
+          component="a"
+          variant="h6"
+          color="#ffffff"
+          ml="10px"
+          flexGrow={1}
+          href="/"
+          style={{ textDecoration: "none" }}
+        >
           Gem Classifier
         </Typography>
         {store.authUser ? (
