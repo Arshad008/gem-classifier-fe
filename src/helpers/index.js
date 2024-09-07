@@ -1,3 +1,11 @@
+import CryptoJS from "crypto-js";
+
+// Get Upload Image Path
+export const getImageLink = (imageName) => {
+  return `${process.env.REACT_APP_REST_API_BASE_URL}/${process.env.REACT_APP_REST_API_UPLOADS_PATH}/${imageName}`;
+};
+
+// Convert Image To JPG
 export const getConvertedJpgFile = (file) => {
   if (file.type === "image/jpeg") return file;
 
@@ -6,20 +14,22 @@ export const getConvertedJpgFile = (file) => {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
         canvas.toBlob(
           (blob) => {
             if (blob) {
-              resolve(new File([blob], 'converted.jpg', { type: 'image/jpeg' }));
+              resolve(
+                new File([blob], "converted.jpg", { type: "image/jpeg" })
+              );
             } else {
-              reject(new Error('Conversion to JPG failed.'));
+              reject(new Error("Conversion to JPG failed."));
             }
           },
-          'image/jpeg',
+          "image/jpeg",
           1
         );
       };
@@ -30,10 +40,29 @@ export const getConvertedJpgFile = (file) => {
   });
 };
 
+// Email Validation
 export const isEmailValid = (email = "") => {
   return String(email)
     .toLowerCase()
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+};
+
+// Hash Password
+export const getSha512ConvertedHash = (text) => {
+  return CryptoJS.SHA512(text).toString();
+};
+
+// Local Storage Helpers
+export const setAuthUserIdToLocalStorage = (userId) => {
+  window.localStorage.setItem("AUTH_USER_ID", userId);
+};
+
+export const getAuthUserIdFromLocalStorage = () => {
+  return window.localStorage.getItem("AUTH_USER_ID");
+};
+
+export const removeAuthUserIdFromLocalStorage = () => {
+  window.localStorage.removeItem("AUTH_USER_ID");
 };

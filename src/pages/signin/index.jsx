@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -10,6 +10,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useSnackbar } from "notistack";
+
+import { signInUser } from "../../apis";
+import { StoreContext } from "../../store";
+import {
+  getSha512ConvertedHash,
+  setAuthUserIdToLocalStorage,
+} from "../../helpers";
 
 const containerStyles = {
   display: "flex",
@@ -20,8 +28,9 @@ const containerStyles = {
 };
 
 const cardContainerStyles = {
-  maxWidth: "600px",
+  maxWidth: "400px",
   borderRadius: "20px",
+  margin: "15px 0",
 };
 
 const initialState = {
@@ -30,8 +39,13 @@ const initialState = {
 };
 
 function SignInPage() {
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const { store, setStore } = useContext(StoreContext);
+
   // State
   const [state, setState] = useState({ ...initialState });
+  const [isLoading, setLoading] = useState(false);
 
   const isSubmitDisabled =
     !state.email.trim().length || !state.password.trim().length;
@@ -43,9 +57,44 @@ function SignInPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const updateStore = (attributes = {}) => {
+    setStore((prevState) => ({
+      ...prevState,
+      ...attributes,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(state);
+
+    setLoading(true);
+
+    await signInUser({
+      email: state.email,
+      password: getSha512ConvertedHash(state.password),
+    })
+      .then((res) => {
+        if (res.data && res.success) {
+          setAuthUserIdToLocalStorage(res.data);
+          updateStore({
+            authUserId: res.data,
+          });
+
+          navigate("/predict");
+          window.location.reload();
+        } else {
+          enqueueSnackbar("Invalid username or password!", {
+            variant: "error",
+          });
+        }
+      })
+      .catch(() => {
+        enqueueSnackbar("Invalid username or password!", {
+          variant: "error",
+        });
+      });
+
+    setLoading(false);
   };
 
   return (
@@ -85,8 +134,9 @@ function SignInPage() {
                 size="large"
                 variant="contained"
                 color="primary"
+                loading={isLoading}
                 disabled={isSubmitDisabled}
-                sx={{ maxWidth: "400px", textTransform: "capitalize" }}
+                sx={{ maxWidth: "300px", textTransform: "capitalize" }}
               >
                 Sign In
               </LoadingButton>

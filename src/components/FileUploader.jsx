@@ -1,18 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { useDropzone } from "react-dropzone";
+import { useSnackbar } from "notistack";
 
-import { getConvertedJpgFile } from "../helpers";
 import { StoreContext } from "../store";
+import { uploadFile } from "../apis";
+import { getConvertedJpgFile } from "../helpers";
 
-const FileUploader = () => {
+const FileUploader = ({ updateHistoryList }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { store, setStore } = useContext(StoreContext);
+
   // State
   const [isPending, setPending] = useState(false);
   const [thumbFile, setThumbFile] = useState(undefined);
   const [errorMessages, setErrorMessages] = useState([]);
 
-  // Hooks
-  const { store, setStore } = useContext(StoreContext);
+  const isLoggedIn = Boolean(store.authUser);
+  const isUploadDisabled = isPending || !isLoggedIn;
 
   useEffect(() => {
     return () => {
@@ -40,12 +45,44 @@ const FileUploader = () => {
         isLoading: true,
       });
 
-      const fileToBeUploaded = await getConvertedJpgFile(acceptedFiles[0]);
+      const convertedFile = await getConvertedJpgFile(acceptedFiles[0]);
+
       setThumbFile(
-        Object.assign(fileToBeUploaded, {
-          preview: URL.createObjectURL(fileToBeUploaded),
+        Object.assign(convertedFile, {
+          preview: URL.createObjectURL(convertedFile),
         })
       );
+
+      const form = new FormData();
+      form.append("file", convertedFile);
+
+      // API CALL
+      await uploadFile(form)
+        .then((res) => {
+          if (res.success && res.data) {
+            enqueueSnackbar("Prediction completed successfully!", {
+              variant: "success",
+            });
+
+            updateHistoryList();
+          } else {
+            enqueueSnackbar("Prediction failed!", {
+              variant: "error",
+            });
+          }
+        })
+        .catch(() => {
+          enqueueSnackbar("Prediction failed!", {
+            variant: "error",
+          });
+        });
+
+      // Turn on loaders
+      updateStore({
+        isLoading: false,
+      });
+
+      setPending(false);
     }
   };
 
@@ -134,7 +171,12 @@ const FileUploader = () => {
         >
           Choose a file or drag & drop here.
         </Typography>
-        <Typography variant="caption">JPEG, PNG , Max 5 MB </Typography>
+        <Typography variant="caption">JPEG, PNG , Max 5 MB</Typography>
+        {!isLoggedIn ? (
+          <Typography variant="caption" color="primary">
+            Please Login!
+          </Typography>
+        ) : null}
       </>
     );
   };
@@ -144,7 +186,7 @@ const FileUploader = () => {
     accept: {
       "image/*": [],
     },
-    disabled: isPending,
+    disabled: isUploadDisabled,
     onDrop,
     onError,
     onDropRejected,
@@ -155,7 +197,7 @@ const FileUploader = () => {
       {...getRootProps({ className: "img-uploader" })}
       component="div"
       sx={
-        isPending
+        isUploadDisabled
           ? undefined
           : {
               "&:hover": {

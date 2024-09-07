@@ -16,3 +16,12 @@ body {
   max-width: 600px;
   margin: 0 auto;
 }
+
+.ellipsis-text-one-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 1;
+}
